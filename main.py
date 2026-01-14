@@ -1,9 +1,9 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from difflib import SequenceMatcher
+from fastapi.responses import JSONResponse
 
 app = FastAPI()
-
 
 # -------- Load dictionary --------
 def load_words(path: str):
@@ -24,6 +24,7 @@ def similarity(a: str, b: str) -> float:
 def autocorrect(text: str) -> str:
     words = text.split()
     output = []
+    corrections = []
 
     for i, word in enumerate(words):
         lower = word.lower()
@@ -43,6 +44,7 @@ def autocorrect(text: str) -> str:
                     best_word = d
 
             corrected = best_word
+            corrections.append({"old": word, "new": corrected})
 
         # capitalize first word always
         if i == 0:
@@ -53,15 +55,24 @@ def autocorrect(text: str) -> str:
 
         output.append(corrected)
 
-    return " ".join(output)
+    return " ".join(output), corrections
 
 
 # -------- API endpoint --------
 @app.get("/autocorrect")
 def correct(text: str):
-    return {"result": autocorrect(text)}
+    corrected_text, corrections = autocorrect(text)
+    
+    improvements = [
+        "Teksti është përmirësuar duke përdorur gjuhën standarde shqipe."
+    ]
+
+    return JSONResponse(content={
+        "result": corrected_text,
+        "corrections": corrections,
+        "improvements": improvements
+    })
 
 
 # -------- Serve frontend --------
 app.mount("/", StaticFiles(directory="static", html=True), name="static")
-    

@@ -1,29 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Autokorrekt Shqip</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Autokorrekt Shqip</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>Autokorrekt Shqip</h1>
-        </div>
-        <div class="card">
-            <textarea id="input" placeholder="Shkruaj tekstin këtu..."></textarea>
-            <button onclick="korrigjo()">Korrigjo</button>
-
-            <div id="output" class="output"></div>
-        </div>
-        <div class="footer">
-            <button onclick="toggle()">🌙 / ☀️</button>
-        </div>
+  <div class="container">
+    <div class="header">
+      <h1>Autokorrekt Shqip</h1>
+      <p>Përmirëso dhe standardizo tekstin tënd në shqip</p>
     </div>
+    <div class="card">
+      <textarea id="input" placeholder="Shkruaj tekstin këtu..."></textarea>
+      <button onclick="korrigjo()">Korrigjo</button>
+      <div id="output" class="output"></div>
+      <div id="corrections-list"></div>
+      <div id="improvements-list"></div>
+    </div>
+    <div class="footer">
+      <button onclick="toggle()">🌙 / ☀️</button>
+    </div>
+  </div>
 
-    <script src="staticapp.js"></script>
+  <script src="staticapp.js"></script>
 </body>
 </html>
-
-

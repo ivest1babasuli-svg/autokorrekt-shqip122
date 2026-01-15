@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Autokorrekt Shqip</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
@@ -14,16 +14,17 @@
     </div>
     <div class="card">
       <textarea id="input" placeholder="Shkruaj tekstin këtu..."></textarea>
-      <button onclick="korrigjo()">Korrigjo</button>
+      <button id="korrigjoBtn">Korrigjo</button>
       <div id="output" class="output"></div>
-      <div id="corrections-list"></div>
-      <div id="improvements-list"></div>
+      <ul id="corrections-list"></ul>
+      <ul id="improvements-list"></ul>
     </div>
     <div class="footer">
-      <button onclick="toggle()">🌙 / ☀️</button>
+      <button id="themeBtn">🌙</button>
     </div>
   </div>
 
-  <script src="staticapp.js"></script>
+  <!-- load the script from same folder as index.html -->
+  <script src="./staticapp.js"></script>
 </body>
 </html>

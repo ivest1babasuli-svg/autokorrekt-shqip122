@@ -1,8 +1,35 @@
+/* Light theme variables */
+:root {
+  --bg: #f4f4f4;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --muted: #666666;
+  --button-bg: #4CAF50;
+  --button-hover: #45a049;
+  --footer-btn-bg: #333;
+  --footer-btn-hover: #444;
+  --output-color: #333;
+}
+
+/* Dark theme */
+body.dark {
+  --bg: #0f1720;
+  --card-bg: #0b1220;
+  --text: #e6eef6;
+  --muted: #9fb0c6;
+  --button-bg: #1f7a3a;
+  --button-hover: #2b9a55;
+  --footer-btn-bg: #1b2430;
+  --footer-btn-hover: #263244;
+  --output-color: #e6eef6;
+}
+
 body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #f4f4f4;
+  background-color: var(--bg);
+  color: var(--text);
 }
 
 .container {
@@ -18,11 +45,11 @@ body {
 }
 
 .header h1 {
-  color: #333;
+  color: var(--text);
 }
 
 .card {
-  background-color: white;
+  background-color: var(--card-bg);
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -36,26 +63,28 @@ textarea {
   border: 1px solid #ccc;
   border-radius: 8px;
   font-size: 16px;
+  background-color: transparent;
+  color: var(--text);
 }
 
 button {
-  background-color: #4CAF50;
+  background-color: var(--button-bg);
   color: white;
   border: none;
   padding: 10px 20px;
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
   font-size: 16px;
 }
 
 button:hover {
-  background-color: #45a049;
+  background-color: var(--button-hover);
 }
 
 .output {
   margin-top: 20px;
   font-size: 16px;
-  color: #333;
+  color: var(--output-color);
 }
 
 #corrections-list, #improvements-list {
@@ -71,14 +100,16 @@ li {
   text-align: center;
 }
 
-footer button {
-  background-color: #333;
+/* fixed selector for footer button */
+.footer button {
+  background-color: var(--footer-btn-bg);
   color: white;
   padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
+  border: none;
 }
 
-footer button:hover {
-  background-color: #444;
+.footer button:hover {
+  background-color: var(--footer-btn-hover);
 }

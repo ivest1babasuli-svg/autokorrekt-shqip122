@@ -1,4 +1,11 @@
-/* Light theme variables */
+html {
+  background-color: #f4f4f4;
+}
+
+body {
+  background-color: var(--bg);
+}
+
 :root {
   --bg: #f4f4f4;
   --card-bg: #ffffff;

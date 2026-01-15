@@ -44,18 +44,26 @@ def autocorrect(text: str):
 
         lower = core.lower()
 
+        # if word is already correct
         if lower in dictionary_set:
             corrected_core = lower
         else:
-            best_word = dictionary[0]
+            best_word = lower
             best_score = 0.0
+            first_letter = lower[0]
+
             for d in dictionary:
+                if d[0] != first_letter:
+                    continue
+
                 s = similarity(lower, d)
                 if s > best_score:
                     best_score = s
                     best_word = d
+
             corrected_core = best_word
 
+        # preserve capitalization
         if i == 0 or core[0].isupper():
             corrected_core = corrected_core.capitalize()
 
@@ -76,6 +84,5 @@ def autocorrect(text: str):
 def correct(text: str):
     return autocorrect(text)
 
-# -------- FRONTEND (THIS IS THE KEY PART) --------
-# Serve EVERYTHING inside "static/" as the website root "/"
+# -------- Serve frontend as ROOT --------
 app.mount("/", StaticFiles(directory="static", html=True), name="static")

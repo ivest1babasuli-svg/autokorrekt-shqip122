@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from difflib import SequenceMatcher
 import os
+import re
 
 app = FastAPI()
 
@@ -27,19 +28,30 @@ dictionary_set = set(dictionary)  # fast lookup
 def similarity(a: str, b: str) -> float:
     return SequenceMatcher(None, a, b).ratio()
 
-# -------- Autocorrect logic --------
-def autocorrect(text: str) -> str:
+# -------- Autocorrect logic (returns result, corrections, improvements) --------
+def autocorrect(text: str):
     words = text.split()
     output = []
+    corrections = []
+    improvements = []
 
-    for i, word in enumerate(words):
-        lower = word.lower()
+    for i, orig_word in enumerate(words):
+        # Preserve leading/trailing punctuation (very simple handling)
+        m = re.match(r"^(\W*)([\w\u00C0-\u017F]+)(\W*)$", orig_word, flags=re.UNICODE)
+        if m:
+            prefix, core, suffix = m.group(1), m.group(2), m.group(3)
+        else:
+            # no word characters found; keep as-is
+            output.append(orig_word)
+            continue
+
+        lower = core.lower()
 
         # already correct → keep
         if lower in dictionary_set:
-            corrected = lower
+            corrected_core = lower
         else:
-            # find closest dictionary word
+            # find closest dictionary word using similarity
             best_word = dictionary[0]
             best_score = 0.0
 
@@ -49,23 +61,28 @@ def autocorrect(text: str) -> str:
                     best_score = s
                     best_word = d
 
-            corrected = best_word
+            corrected_core = best_word
 
-        # capitalize first word always
+        # preserve capitalization
         if i == 0:
-            corrected = corrected.capitalize()
-        # preserve capitalization for other words
-        elif word[0].isupper():
-            corrected = corrected.capitalize()
+            corrected_core = corrected_core.capitalize()
+        elif core[0].isupper():
+            corrected_core = corrected_core.capitalize()
 
-        output.append(corrected)
+        corrected_word = f"{prefix}{corrected_core}{suffix}"
+        output.append(corrected_word)
 
-    return " ".join(output)
+        # record correction if changed (compare core lowercases)
+        if lower != corrected_core:
+            corrections.append({"old": core, "new": corrected_core})
+
+    result = " ".join(output)
+    return {"result": result, "corrections": corrections, "improvements": improvements}
 
 # -------- API endpoint --------
 @app.get("/autocorrect")
 def correct(text: str):
-    return {"result": autocorrect(text)}
+    return autocorrect(text)
 
 # -------- Serve frontend --------
 app.mount("/", StaticFiles(directory="static", html=True), name="static")

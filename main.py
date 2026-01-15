@@ -85,4 +85,4 @@ def correct(text: str):
     return autocorrect(text)
 
 # -------- Serve frontend --------
-app.mount("/", StaticFiles(directory="static", html=True), name="static")
+app.mount("/static", StaticFiles(directory="static", html=True), name="static")

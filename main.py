@@ -1,7 +1,6 @@
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
+from fastapi.middleware.cors import CORSMiddleware
 from difflib import SequenceMatcher
 import re
 
@@ -77,10 +76,6 @@ def autocorrect(text: str):
 def correct(text: str):
     return autocorrect(text)
 
-# -------- Homepage (THIS FIXES RENDER) --------
-@app.get("/")
-def home():
-    return FileResponse("static/index.html")
-
-# -------- Serve static files --------
-app.mount("/static", StaticFiles(directory="static"), name="static")
+# -------- FRONTEND (THIS IS THE KEY PART) --------
+# Serve EVERYTHING inside "static/" as the website root "/"
+app.mount("/", StaticFiles(directory="static", html=True), name="static")
